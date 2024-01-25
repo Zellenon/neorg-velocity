@@ -15,7 +15,7 @@ module.setup = function()
         requires = {
             'core.keybinds',
             'core.keybinds.keybinds',
-            -- 'core.esupports.hop',
+            'core.esupports.hop',
         },
     }
 end
@@ -31,40 +31,40 @@ module.load = function()
     end
 end
 
-module.public = {
-    follow_link = function(node, split, link)
-        if not link then
-            module.required['core.esupports.hop'].follow_link(node, split, link)
-            return
-        end
+-- module.public = {
+--     follow_link = function(node, split, link)
+--         if not link then
+--             module.required['core.esupports.hop'].follow_link(node, split, link)
+--             return
+--         end
 
-        if link.link_location_text then
-            -- Command links
-            if link.link_location_text:match('^%V:.+') then
-                local cmd = link.link_location_text:gsub('^%V:', 'NV ')
-                vim.cmd(cmd)
-                return
-            end
-        end
+--         if link.link_location_text then
+--             -- Command links
+--             if link.link_location_text:match('^%V:.+') then
+--                 local cmd = link.link_location_text:gsub('^%V:', 'NV ')
+--                 vim.cmd(cmd)
+--                 return
+--             end
+--         end
 
-        module.required['core.esupports.hop'].follow_link(node, split, link)
-    end,
-}
+--         module.required['core.esupports.hop'].follow_link(node, split, link)
+--     end,
+-- }
 
-module.on_event = function(event)
-    local event_name = event.split_type[2]
-    local bufnr = event.buffer
+-- module.on_event = function(event)
+--     local event_name = event.split_type[2]
+--     local bufnr = event.buffer
 
-    if event_name == namespace .. '.' .. EVENT_VELOCITY_LINK then
-        local split = event.content[1]
-        local node = module.required['core.esupports.hop'].extract_link_node()
+--     if event_name == namespace .. '.' .. EVENT_VELOCITY_LINK then
+--         local split = event.content[1]
+--         local node = module.required['core.esupports.hop'].extract_link_node()
 
-        if node then
-            local link = module.required['core.esupports.hop'].parse_link(node, bufnr)
-            module.public.follow_link(node, split, link)
-        end
-    end
-end
+--         if node then
+--             local link = module.required['core.esupports.hop'].parse_link(node, bufnr)
+--             module.public.follow_link(node, split, link)
+--         end
+--     end
+-- end
 
 module.events.subscribed = {
     ['core.keybinds'] = {
